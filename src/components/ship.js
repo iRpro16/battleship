@@ -2,7 +2,7 @@
  * 
  * @param {Number} length - the length of the ship
  */
-export function Ship(length) {
+export function Ship(length, name) {
     // number of hits
     let hits = 0;
     // is sunk
@@ -26,6 +26,7 @@ export function Ship(length) {
 
     return {
         length: length,
+        name: name,
         getHits,
         hit, 
         isSunk

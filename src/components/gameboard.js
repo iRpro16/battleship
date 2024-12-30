@@ -1,3 +1,5 @@
+import { Ship } from "./ship";
+
 export function Gameboard() {
     // create array
     const create2DArray = ({rows, columns, value}) => {
@@ -9,16 +11,40 @@ export function Gameboard() {
     // create 10 x 10 board filled with 0s
     let board = create2DArray( {rows: 10, columns: 10, value: 0});
 
-    // receiveAttack()
-    const receiveAttack = (coordinates) => {
+    // create array of ships
+    let ships = []
 
+    // logged hits
+    let loggedHits = [];
+
+    // receiveAttack()
+    const receiveAttack = (coordinates, ships) => {
+        // get coordinates
+        let [x, y] = coordinates;
+
+        // get coordinate
+        let coordinate = board[x][y];
+
+        // if spot already attacked
+        if (loggedHits.includes(`[${coordinates}]`)) return 'Already hit this spot';
+
+        // push to loggedhits
+        loggedHits.push(`[${coordinates}]`);
+        
+        // match with ship
+        if (coordinate !== 0) {
+            // get ship
+            let hitShip = logHit(coordinate, ships);
+            hitShip.hit();
+        } else {
+            return 'you missed';
+        }
     }
 
     // place ship
     const placeShip = (ship, start, orientation) => {
         // coordinates
-        let x = start[0];
-        let y = start[1];
+        let [x, y] = start;
 
         // distance
         let distance = ship.length - 1;
@@ -38,6 +64,13 @@ export function Gameboard() {
         }
     }
 
+    // shinks sunk
+    const shipsSunk = (ships) => {
+        let numShipsSunk = ships.filter((ship) => ship.getSunkStatus());
+        if (numShipsSunk.length === 5) return 'all ships sunk';
+        return 'still missing ships!';
+    }
+
     // on board
     const onBoard = (coordinates) => {
         let [x, y] = coordinates;
@@ -50,31 +83,18 @@ export function Gameboard() {
         return board[x][y] === 0;
     }
 
+    // log hit
+    const logHit = (shipName, ships) => {
+        // get hit ship
+        return ships.find((ship) => ship.name === shipName);
+    }
+
     return {
         board: board,
-        placeShip
+        placeShip,
+        receiveAttack,
+        shipsSunk
     }
 }
 
 module.exports = Gameboard;
-
-/**
- * this means the input of where I drag the boat, must be used
- * as input to then place ship function.
- * 
- * [0, 0] as starting point
- * if length is 3, then it is length - 1
- * if horizontal: it is [0, 0], [0,1], [0, 2] where length is 3.
- * therefore [x][i]
- * 
- * let's say its bottom half:
- * so [6, 2] as starting point, with ship length 3 and horizontal
- * --> [6, 2 + 0] = [6, 2]
- * --> [6, 2 + 1] = [6, 3]
- * --> [6, 2 + 2] = [6, 4]
- * 
- * 
- * cases:
- * where x1 and x2 are the same -> horizontal so we do y2 - y1 along x.
- * where y1 and y2 are the same -> vertical so we do x2 - x1 along y
- */

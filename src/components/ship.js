@@ -24,9 +24,13 @@ export function Ship(length, name) {
     // get num hits
     const getHits = () => hits;
 
+    // get if sunk
+    const getSunkStatus = () => sunk;
+
     return {
         length: length,
         name: name,
+        getSunkStatus,
         getHits,
         hit, 
         isSunk

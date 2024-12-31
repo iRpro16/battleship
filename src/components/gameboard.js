@@ -1,23 +1,28 @@
-import { Ship } from "./ship";
+import Ship from "./ship";
 
-export function Gameboard() {
-    // create array
-    const create2DArray = ({rows, columns, value}) => {
-        return Array.from({ length: rows }, () => (
-            Array.from({ length: columns }, () => value)
-        ));
-    }
-    
+function Gameboard() {
     // create 10 x 10 board filled with 0s
     let board = create2DArray( {rows: 10, columns: 10, value: 0});
 
-    // create array of ships
-    let ships = []
+    // get ships
+    let ships = createShips();
 
     // logged hits
     let loggedHits = [];
 
-    // receiveAttack()
+     // create array
+     function create2DArray ({rows, columns, value}) {
+        return Array.from({ length: rows }, () => (
+            Array.from({ length: columns }, () => value)
+        ));
+    }
+
+    /**
+     * 
+     * @param {Object} coordinates - the x, y coordinates as an array of a spot on the board
+     * @param {Object} ships - an array of objects, which are the ship objects
+     * @returns 
+     */
     const receiveAttack = (coordinates, ships) => {
         // get coordinates
         let [x, y] = coordinates;
@@ -37,11 +42,17 @@ export function Gameboard() {
             let hitShip = logHit(coordinate, ships);
             hitShip.hit();
         } else {
-            return 'you missed';
+            board[x][y] = 'x';
         }
     }
 
-    // place ship
+    /**
+     * 
+     * @param {Object} ship - a ship object from Ship factory function
+     * @param {Object} start - the x, y coordinates as an array of a spot on the board
+     * @param {String} orientation - whether the ship is horizontal or vertical
+     * @returns 
+     */
     const placeShip = (ship, start, orientation) => {
         // coordinates
         let [x, y] = start;
@@ -62,6 +73,25 @@ export function Gameboard() {
                 return 'cannot place ship here';
             }
         }
+    }
+
+     // create ships
+     function createShips () {
+        // ships array
+        const ships = [];
+
+        // classic ships of Battleship
+        const carrier = Ship(5, "carrier");
+        const battleship = Ship(4, "battleship");
+        const cruiser = Ship(3, "cruiser");
+        const submarine = Ship(3, "submarine");
+        const destroyer = Ship(2, "destroyer");
+
+        // push all
+        ships.push(carrier, battleship, cruiser, submarine, destroyer);
+
+        // return array of ships
+        return ships;
     }
 
     // shinks sunk
@@ -90,11 +120,14 @@ export function Gameboard() {
     }
 
     return {
-        board: board,
+        board,
+        ships,
         placeShip,
         receiveAttack,
-        shipsSunk
+        shipsSunk,
+        createShips
     }
 }
 
 module.exports = Gameboard;
+export default Gameboard;

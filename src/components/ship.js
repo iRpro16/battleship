@@ -2,7 +2,7 @@
  * 
  * @param {Number} length - the length of the ship
  */
-export function Ship(length, name) {
+function Ship(length, name) {
     // number of hits
     let hits = 0;
     // is sunk
@@ -38,3 +38,4 @@ export function Ship(length, name) {
 }
 
 module.exports = Ship;
+export default Ship;

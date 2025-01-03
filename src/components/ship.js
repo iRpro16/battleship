@@ -37,5 +37,4 @@ function Ship(length, name) {
     }
 }
 
-module.exports = Ship;
 export default Ship;

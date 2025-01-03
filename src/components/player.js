@@ -1,6 +1,6 @@
 import Gameboard from "./gameboard";
 
-function Player() {
+function Player(currentPlayer) {
     // each instance gets their own gameboard
     let gameboard = Gameboard();
 
@@ -9,12 +9,18 @@ function Player() {
         enemyBoard.receiveAttack(coordinates, enemyBoard.ships);
     }
 
+    // initialize player ships
+    const initPlayerShips = () => {
+        gameboard.initShips();
+    }
+
     return {
         gameboard,
+        currentPlayer: currentPlayer,
         board: gameboard.board,
-        launchAttack
+        launchAttack,
+        initPlayerShips
     }
 }
 
-module.exports = Player;
-export { Player };
+export default Player;

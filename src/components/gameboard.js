@@ -1,4 +1,5 @@
 import Ship from "./ship";
+import generateCoordinates from "../utils/randomCoords";
 
 function Gameboard() {
     // create 10 x 10 board filled with 0s
@@ -57,24 +58,37 @@ function Gameboard() {
         // coordinates
         let [x, y] = start;
 
+        // possible postions
+        let possiblePositions = [];
+
         // distance
         let distance = ship.length - 1;
 
-        // place ship
+        // push coordinates
         for (let i = 0; i <= distance; i++) {
             // new vars
             let newX = orientation === 'horizontal' ? x : x + i;
             let newY = orientation === 'horizontal' ? y + i : y;
 
-            // if on board and is not occupied
-            if (onBoard([newX, newY]) && isEmpty([newX, newY])) {
-                board[newX][newY] = ship.name;
-            } else {
-                return 'cannot place ship here';
-            }
+            possiblePositions.push([newX, newY]);
         }
+
+        // check if values are true
+        if(possiblePositions.every(isTrue)) {
+            // check each coordinate
+            for (const coordinate of possiblePositions) {
+                board[coordinate[0]][coordinate[1]] = ship.name;
+            }
+            return true;
+        }
+        return false;
     }
 
+    // callback function to check if true
+    const isTrue = (coordinate) => {
+        if (onBoard(coordinate) && isEmpty(coordinate)) return true;
+        return false;
+    }
      // create ships
      function createShips () {
         // ships array
@@ -92,6 +106,31 @@ function Gameboard() {
 
         // return array of ships
         return ships;
+    }
+
+    // initialize random ship positions
+    const initShips = () => {
+        // clear board first
+        clearBoard();
+
+        // orientations
+        let orientations = ['horizontal', 'vertical'];
+
+        // for each ship
+        ships.forEach((ship) => {
+            let placed = false;
+
+            while(!placed) {
+                // get random coordinates
+                let start = generateCoordinates(10);
+
+                // choose random orientation
+                let index = Math.floor(Math.random() * 2);
+
+                // attempt to place ship
+                placed = placeShip(ship, start, orientations[index]);
+            }
+        })
     }
 
     // shinks sunk
@@ -119,15 +158,24 @@ function Gameboard() {
         return ships.find((ship) => ship.name === shipName);
     }
 
+    // clear board
+    const clearBoard = () => {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                board[i][j] = 0;
+            }
+        }
+    }
+
     return {
         board,
         ships,
         placeShip,
         receiveAttack,
         shipsSunk,
-        createShips
+        createShips,
+        initShips
     }
 }
 
-module.exports = Gameboard;
 export default Gameboard;

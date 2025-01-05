@@ -38,12 +38,44 @@ body {
     width: clamp(600px, 100%, 1300px);
 }
 
-.board {
+.board-player, .board-enemy {
     display: grid;
     height: 400px;
     width: 400px;
     border: 1px solid blue;
     opacity: 0.5;
+}
+
+.middle-cont-player, .middle-cont-enemy {
+    display: flex;
+}
+
+.letters-cont {
+    display: grid;
+    height: 40px;
+    width: 440px;
+    grid-template-columns: repeat(11, 1fr);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.numbers-cont {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    width: 40px;
+    grid-template-rows: repeat(10, 1fr);
+}
+
+/* bottom cont */
+.bottom-cont {
+    display: flex;
+    width: 400px;
+    align-items: center;
+    justify-content: center;
+    float: right;
 }
 
 /* ships */
@@ -70,4 +102,18 @@ body {
 .destroyer {
     background-color: rgba(255, 160, 122, 0.616);
     border: 2px solid orange;
+}
+
+/* buttons */
+.randomize-btn {
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid blue;
+    padding: 5px;
+    color: blue;
+    font-size: 15px;
+}
+
+.randomize-btn:hover {
+    cursor: pointer;
 }

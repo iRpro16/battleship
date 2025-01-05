@@ -1,10 +1,11 @@
+import randomizeEventListener from "../controllers/randomize";
+
 const renderBoard = (function () {
     // load board
     const createBoard = (player, boardObject) => {
         // create board
         const board = document.createElement("div");
-        board.classList.add("board");
-        board.classList.add(`${player.currentPlayer}`);
+        board.classList.add(`board-${player.currentPlayer}`);
         board.style.gridTemplateColumns = `repeat(${boardObject.length}, 1fr)`;
         board.style.gridTemplateRows = `repeat(${boardObject.length}, 1fr)`;
 
@@ -35,27 +36,99 @@ const renderBoard = (function () {
     }
 
     // append both board to the central div
-    const appendBoards = (player) => {
+    const appendBoard = (player) => {
         // get central div
         const centralDiv = document.querySelector('.central-div');
 
         // get board
         let playerGameBoard = createBoard(player, player.board);
 
+        // get surrounding
+        const surroundingCont = createSurrounding(playerGameBoard, player.currentPlayer);
+
         // append
-        centralDiv.append(playerGameBoard);
+        centralDiv.append(surroundingCont);
     }
 
-    const createSurrounding = () => {
+    const createSurrounding = (board, playerName) => {
         // surrounding container
-        const surroundingContainer = document.createElement("div");
-        surroundingContainer.classList.add('surrounding-cont');
-        surroundingContainer.style.height = '600px';
-        surroundingContainer.style.weight = '600px';
+        const surroundingCont = document.createElement("div");
+        surroundingCont.classList.add(`surround-cont-${playerName}`);
+        surroundingCont.style.height = '600px';
+        surroundingCont.style.weight = '600px';
+
+        // create letters
+        const lettersCont = document.createElement("div");
+        lettersCont.classList.add('letters-cont');
+        appendItems(lettersCont, 'letters', 11)
+        surroundingCont.append(lettersCont);
+
+        // middle container
+        const middleCont = document.createElement("div");
+        middleCont.classList.add(`middle-cont-${playerName}`);
+
+        // numbers container
+        const numbersCont = document.createElement("div");
+        numbersCont.classList.add("numbers-cont");
+        appendItems(numbersCont, 'numbers', 10);
+        middleCont.append(numbersCont, board);
+
+        // bottom cont
+        const bottomCont = document.createElement("div");
+        bottomCont.classList.add("bottom-cont");
+
+        // player board
+        const playerBoard = document.createElement('p');
+        playerBoard.innerText = `${playerName} board`;
+
+        // append player names
+        if (playerName === 'player') {
+            bottomCont.append(playerBoard, createRandomizeBtn());
+            bottomCont.style.gap = '10px';
+        } else {
+            bottomCont.append(playerBoard)
+        }
+
+        surroundingCont.append(middleCont, bottomCont);
+        return surroundingCont;
+    }
+
+    const appendItems = (container, type, length) => {
+        // array of alphabet
+        let arrayAlphaBet = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+        // if type
+        for (let i = 0; i < length; i++) {
+            // create items
+            let item = document.createElement('div');
+
+            // if number or letter
+            if (type === 'letters') {
+                // first element empty
+                item.innerText = arrayAlphaBet[i];
+                container.append(item);
+            }
+
+            if (type === 'numbers') {
+                item.innerText = i + 1;
+                container.append(item);
+            }
+        }
+    }
+
+    const createRandomizeBtn = () => {
+        // randomize button
+        const randomizeBtn = document.createElement('button');
+        randomizeBtn.classList.add('randomize-btn');
+        randomizeBtn.innerText = 'Randomize';
+        randomizeEventListener.init()
+
+        return randomizeBtn;
     }
 
     return {
-        appendBoards
+        appendBoard,
+        createBoard
     }
 })();
 

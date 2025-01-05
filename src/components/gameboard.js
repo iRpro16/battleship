@@ -3,7 +3,7 @@ import generateCoordinates from "../utils/randomCoords";
 
 function Gameboard() {
     // create 10 x 10 board filled with 0s
-    let board = create2DArray( {rows: 10, columns: 10, value: 0});
+    let board = create2DArray( {rows: 10, columns: 10, value: 0} );
 
     // get ships
     let ships = createShips();

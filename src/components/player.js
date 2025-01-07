@@ -1,12 +1,12 @@
 import Gameboard from "./gameboard";
 
-function Player(currentPlayer) {
+function Player(name) {
     // each instance gets their own gameboard
     let gameboard = Gameboard();
 
     // launch attack
     const launchAttack = (enemyBoard, coordinates) => {
-        enemyBoard.receiveAttack(coordinates, enemyBoard.ships);
+        return enemyBoard.receiveAttack(coordinates, enemyBoard.ships);
     }
 
     // initialize player ships
@@ -16,7 +16,7 @@ function Player(currentPlayer) {
 
     return {
         gameboard,
-        currentPlayer: currentPlayer,
+        name: name,
         board: gameboard.board,
         launchAttack,
         initPlayerShips

@@ -43,7 +43,6 @@ body {
     height: 400px;
     width: 400px;
     border: 1px solid blue;
-    opacity: 0.5;
 }
 
 .middle-cont-player, .middle-cont-enemy {
@@ -116,4 +115,16 @@ body {
 
 .randomize-btn:hover {
     cursor: pointer;
+}
+
+.board-enemy > div, .board-player > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.hit {
+    color: red;
+    background-color: lightgray;
 }

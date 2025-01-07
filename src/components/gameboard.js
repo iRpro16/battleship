@@ -1,5 +1,5 @@
 import Ship from "./ship";
-import generateCoordinates from "../utils/randomCoords";
+import helperFunctions from "../utils/helperFunctions";
 
 function Gameboard() {
     // create 10 x 10 board filled with 0s
@@ -42,8 +42,11 @@ function Gameboard() {
             // get ship
             let hitShip = logHit(coordinate, ships);
             hitShip.hit();
+            board[x][y] = [hitShip.name, 'hit'];
+            return true;
         } else {
             board[x][y] = 'x';
+            return false;
         }
     }
 
@@ -122,7 +125,7 @@ function Gameboard() {
 
             while(!placed) {
                 // get random coordinates
-                let start = generateCoordinates(10);
+                let start = helperFunctions.generateCoordinates(10);
 
                 // choose random orientation
                 let index = Math.floor(Math.random() * 2);
@@ -136,8 +139,8 @@ function Gameboard() {
     // shinks sunk
     const shipsSunk = (ships) => {
         let numShipsSunk = ships.filter((ship) => ship.getSunkStatus());
-        if (numShipsSunk.length === 5) return 'all ships sunk';
-        return 'still missing ships!';
+        if (numShipsSunk.length === 5) return true;
+        return false;
     }
 
     // on board

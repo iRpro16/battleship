@@ -13,8 +13,10 @@ function startButton(player) {
             randomizeBtn.disabled = true;
 
             // get enemyboard
-            const enemyBoard = document.querySelector('.board-enemy');
-            enemyBoard.addEventListener('click', gameScreen.handleEnemyBoardClick);
+            const items = document.querySelectorAll('.board-enemy > div');
+            items.forEach((item) => {
+                item.addEventListener('click', gameScreen.handleEnemyBoardClick, {once: true})
+            })
         }
     })
 }

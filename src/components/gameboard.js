@@ -8,9 +8,6 @@ function Gameboard() {
     // get ships
     let ships = createShips();
 
-    // logged hits
-    let loggedHits = [];
-
      // create array
      function create2DArray ({rows, columns, value}) {
         return Array.from({ length: rows }, () => (
@@ -30,12 +27,6 @@ function Gameboard() {
 
         // get coordinate
         let coordinate = board[x][y];
-
-        // if spot already attacked
-        if (loggedHits.includes(`[${coordinates}]`)) return 'Already hit this spot';
-
-        // push to loggedhits
-        loggedHits.push(`[${coordinates}]`);
         
         // match with ship
         if (coordinate !== 0) {
@@ -137,7 +128,7 @@ function Gameboard() {
     }
 
     // shinks sunk
-    const shipsSunk = (ships) => {
+    const shipsSunk = () => {
         let numShipsSunk = ships.filter((ship) => ship.getSunkStatus());
         if (numShipsSunk.length === 5) return true;
         return false;

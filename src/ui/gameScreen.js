@@ -1,10 +1,9 @@
 import gameController from "../controllers/gameController";
 import renderBoard from "./renderBoard";
 import helperFunctions from "../utils/helperFunctions";
+import createWinnerPrompt from "./declareWinner";
 
 const gameScreen = (function() {
-    let marker = 'x';
-
     const handleEnemyBoardClick = (e) => {
         // convert input to coordinates
         let coordinates = helperFunctions.convertInput(e.target.id);
@@ -15,23 +14,43 @@ const gameScreen = (function() {
         // if player lands hit
         if (hit) {
             let classes = [e.target.classList, 'hit'];
-            console.log("Hit! Player can play again");
             e.target.classList.add(...classes);
+            e.target.style.backgroundColor = 'lightgrey';
         } else {
-            console.log("Miss! Switching to enemy's turn");
             e.target.style.color = 'blue';
             gameController.computerTurn();
         }
 
-        e.target.innerText = marker;
-        updatePlayerBoard();
+        e.target.innerText = 'x';
+
+        // update and check winner
+        setTimeout(updatePlayerBoard, 1000);
+        checkWinner();
     }
 
     // re-render board after each hit
     const updatePlayerBoard = () => {
         let player = gameController.players[0];
-
         renderBoard.render(player.board);
+    }
+
+    // game conditions
+    const checkWinner = () => {
+        // gameboard
+        let playerGameBoard = gameController.players[0].gameboard;
+        let enemyGameBoard = gameController.players[1].gameboard;
+        let items = document.querySelectorAll('.board-enemy > div ');
+        const content = document.querySelector('.content');
+
+        // get winner
+        let winner = playerGameBoard.shipsSunk() ? gameController.players[1] : gameController.players[0];
+
+        // declare winner
+        if (playerGameBoard.shipsSunk() || enemyGameBoard.shipsSunk()) {
+            // remove event listenr if there is a win
+            items.forEach((item) => item.removeEventListener('click', handleEnemyBoardClick));
+            content.append(createWinnerPrompt(winner.name));
+        }
     }
 
     return {

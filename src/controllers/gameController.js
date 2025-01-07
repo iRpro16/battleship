@@ -7,7 +7,7 @@ const gameController = (function() {
     const players = [];
 
     // last moves
-    const lastMoves = [];
+    const loggedHits = [];
 
     // initialize the game
     const init = () => {
@@ -48,16 +48,22 @@ const gameController = (function() {
         // get coordinates
         let coordinates = helperFunctions.generateCoordinates(10);
 
+        // avoid duplicate coordinates
+        while(loggedHits.includes(`[${coordinates}]`)) {
+            coordinates = helperFunctions.generateCoordinates(10);
+        }
+
+        // push to loggedhits
+        loggedHits.push(`[${coordinates}]`);
+
         // hit player
-        let hit = enemy.launchAttack(player.gameboard, coordinates)
+        let hit = enemy.launchAttack(player.gameboard, coordinates);
 
         // computer attack
         if (hit) {
-            console.log("enemy hit a ship");
             computerTurn();
             return true;
         } else {
-            console.log("enemy missed!");
             return false;
         }
     }

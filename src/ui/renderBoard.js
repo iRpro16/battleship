@@ -1,6 +1,4 @@
 import randomizeEventListener from "../controllers/randomize";
-import gameController from "../controllers/gameController";
-import gameScreen from "./gameScreen";
 import startButton from "./start";
 
 const renderBoard = (function () {

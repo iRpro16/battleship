@@ -15,7 +15,7 @@ body {
     align-items: center;
     width: 100%;
     height: 10%;
-    border-bottom: 5px solid black;
+    box-shadow: 0 4px 2px -2px gray;
 }
 
 .header-title {
@@ -26,16 +26,17 @@ body {
 /* content */
 .content {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     width: 100%;
-    height: 80%;
+    height: 70%;
 }
 
 .central-div {
     display: flex;
     justify-content: space-around;
-    height: 90%;
+    height: 60%;
     width: clamp(600px, 100%, 1300px);
+    margin-top: 80px;
 }
 
 .board-player, .board-enemy {
@@ -66,6 +67,26 @@ body {
     height: 400px;
     width: 40px;
     grid-template-rows: repeat(10, 1fr);
+}
+
+.winner-div {
+    display:flex ;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    flex-direction: column;
+}
+
+.again-btn {
+    color: black;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.again-btn:hover {
+    cursor: pointer;
 }
 
 /* bottom cont */
@@ -107,15 +128,45 @@ body {
 .randomize-btn {
     background-color: white;
     border-radius: 5px;
-    border: 2px solid blue;
+    border: 2px solid rgb(71, 71, 255);
     padding: 5px;
-    color: blue;
+    color: rgb(71, 71, 255);
     font-size: 15px;
+    
 }
 
 .randomize-btn:hover {
     cursor: pointer;
 }
+
+.start-btn {
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid rgb(0, 206, 0);
+    padding: 5px;
+    color: rgb(0, 206, 0);
+    font-size: 15px;
+}
+
+.start-btn:hover {
+    cursor: pointer;
+}
+
+.start-btn:disabled {
+    border-color: darkgreen;
+    color: darkgreen;
+    background-color: rgb(245, 245, 245);
+    cursor: default;
+}
+
+.randomize-btn:disabled {
+    border-color: darkblue;
+    color: darkblue;
+    background-color: rgb(245, 245, 245);
+    cursor: default;
+}
+
+/* UI stuff*/
 
 .board-enemy > div, .board-player > div {
     display: flex;

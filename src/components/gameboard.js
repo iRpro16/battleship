@@ -2,18 +2,9 @@ import Ship from "./ship";
 import helperFunctions from "../utils/helperFunctions";
 
 function Gameboard() {
-    // create 10 x 10 board filled with 0s
     let board = create2DArray( {rows: 10, columns: 10, value: 0} );
 
-    // get ships
     let ships = createShips();
-
-     // create array
-     function create2DArray ({rows, columns, value}) {
-        return Array.from({ length: rows }, () => (
-            Array.from({ length: columns }, () => value)
-        ));
-    }
 
     /**
      * 
@@ -78,14 +69,13 @@ function Gameboard() {
         return false;
     }
 
-    // callback function to check if true
     const isTrue = (coordinate) => {
         if (onBoard(coordinate) && isEmpty(coordinate)) return true;
         return false;
     }
-     // create ships
-     function createShips () {
-        // ships array
+
+    
+    function createShips () {
         const ships = [];
 
         // classic ships of Battleship
@@ -98,16 +88,18 @@ function Gameboard() {
         // push all
         ships.push(carrier, battleship, cruiser, submarine, destroyer);
 
-        // return array of ships
         return ships;
     }
 
-    // initialize random ship positions
-    const initShips = () => {
-        // clear board first
-        clearBoard();
+    function create2DArray ({rows, columns, value}) {
+        return Array.from({ length: rows }, () => (
+            Array.from({ length: columns }, () => value)
+        ));
+    }
 
-        // orientations
+    const initShips = () => {
+        clearBoard(); 
+
         let orientations = ['horizontal', 'vertical'];
 
         // for each ship
@@ -127,32 +119,27 @@ function Gameboard() {
         })
     }
 
-    // shinks sunk
     const shipsSunk = () => {
         let numShipsSunk = ships.filter((ship) => ship.getSunkStatus());
         if (numShipsSunk.length === 5) return true;
         return false;
     }
 
-    // on board
     const onBoard = (coordinates) => {
         let [x, y] = coordinates;
         return x >= 0 && y <= 9 && x <= 9 && y >= 0;
     }
 
-    // space occupied
     const isEmpty = (coordinates) => {
         let [x, y] = coordinates;
         return board[x][y] === 0;
     }
 
-    // log hit
     const logHit = (shipName, ships) => {
         // get hit ship
         return ships.find((ship) => ship.name === shipName);
     }
 
-    // clear board
     const clearBoard = () => {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {

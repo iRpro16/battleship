@@ -1,7 +1,6 @@
 import gameScreen from "./gameScreen";
 
 function startButton(player) {
-    // queries
     const startBtn = document.querySelector('.start-btn');
     const randomizeBtn = document.querySelector('.randomize-btn');
 

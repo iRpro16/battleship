@@ -13,28 +13,27 @@ const gameScreen = (function() {
 
         // if player lands hit
         if (hit) {
-            let classes = [e.target.classList, 'hit'];
+            let classes = [e.target.classList, 'hit']; // set classes
             e.target.classList.add(...classes);
             e.target.style.backgroundColor = 'lightgrey';
         } else {
             e.target.style.color = 'blue';
             gameController.computerTurn();
         }
-
+        
+        // set marker UI
         e.target.innerText = 'x';
-
+        
         // update and check winner
         setTimeout(updatePlayerBoard, 1000);
         checkWinner();
     }
 
-    // re-render board after each hit
     const updatePlayerBoard = () => {
         let player = gameController.players[0];
         renderBoard.render(player.board);
     }
 
-    // game conditions
     const checkWinner = () => {
         // gameboard
         let playerGameBoard = gameController.players[0].gameboard;
@@ -47,14 +46,14 @@ const gameScreen = (function() {
 
         // declare winner
         if (playerGameBoard.shipsSunk() || enemyGameBoard.shipsSunk()) {
-            // remove event listenr if there is a win
+            // remove event listener if there is a win
             items.forEach((item) => item.removeEventListener('click', handleEnemyBoardClick));
             content.append(createWinnerPrompt(winner.name));
         }
     }
 
     return {
-        handleEnemyBoardClick
+        handleEnemyBoardClick,
     }
 })();
 

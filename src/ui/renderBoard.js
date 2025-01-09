@@ -2,7 +2,6 @@ import randomizeEventListener from "../controllers/randomize";
 import startButton from "./start";
 
 const renderBoard = (function () {
-    // load board
     const createBoard = (player, boardObject) => {
         // create board
         const board = document.createElement("div");
@@ -37,7 +36,6 @@ const renderBoard = (function () {
         return board;
     }
 
-    // append both board to the central div
     const appendBoard = (player) => {
         // get central div
         const centralDiv = document.querySelector('.central-div');
@@ -143,11 +141,9 @@ const renderBoard = (function () {
     }
 
     const render = (playerBoard) => {
-        // clear
         clear();
 
-        // get UI board
-        let playerBoardUI = document.querySelector('.board-player');
+        let playerBoardUI = document.querySelector('.board-player'); // get UI board
 
         // create items
         for (let i = 0; i < playerBoard.length; i++) {
@@ -176,8 +172,7 @@ const renderBoard = (function () {
     }
 
     const clear = () => {
-        // fetch board
-        let playerBoardUI = document.querySelector('.board-player');
+        let playerBoardUI = document.querySelector('.board-player'); // fetch board
 
         // clear every element
         while(playerBoardUI.lastElementChild) {

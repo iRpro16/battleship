@@ -2,13 +2,11 @@ import gameController from "./gameController";
 import renderBoard from "../ui/renderBoard";
 
 const randomizeEventListener = (function() {
-    // init
     const init = () => {
         const content = document.querySelector(".content");
         content.addEventListener('click', handleRandomizeClick);
     }
 
-    // handle click
     const handleRandomizeClick = (e) => {
         if (e.target.classList.contains('randomize-btn')) {
             // get player

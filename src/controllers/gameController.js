@@ -7,7 +7,7 @@ const gameController = (function() {
     const players = [];
 
     // last moves
-    const loggedHits = [];
+    const loggedMoves = [];
 
     // initialize the game
     const init = () => {
@@ -32,7 +32,6 @@ const gameController = (function() {
         renderBoard.appendBoard(players[1]);
     }
 
-    // player turn
     const playerTurn = (coordinates) => {
         let player = players[0];
         let enemy = players[1];
@@ -40,40 +39,59 @@ const gameController = (function() {
         return player.launchAttack(enemy.gameboard, coordinates);
     }
 
-    // computer turn
     const computerTurn = () => {
-        let player = players[0];
-        let enemy = players[1];
-
-        // get coordinates
-        let coordinates = helperFunctions.generateCoordinates(10);
-
-        // avoid duplicate coordinates
-        while(loggedHits.includes(`[${coordinates}]`)) {
-            coordinates = helperFunctions.generateCoordinates(10);
-        }
-
-        // push to loggedhits
-        loggedHits.push(`[${coordinates}]`);
-
+        // coordinates
+        let coordinates = randomCoordinates(loggedMoves);
+    
+        // log the move
+        loggedMoves.push(`[${coordinates}]`);
+    
         // hit player
-        let hit = enemy.launchAttack(player.gameboard, coordinates);
-
-        // computer attack
-        if (hit) {
-            computerTurn();
-            return true;
-        } else {
-            return false;
+        let hit = players[1].launchAttack(players[0].gameboard, coordinates);
+    
+        while (hit) {
+            let lastMove = loggedMoves[loggedMoves.length - 1];
+            coordinates = adjacentCoordinates(loggedMoves, lastMove);
+    
+            // Ensure there are valid adjacent coordinates
+            if (!coordinates) break;
+    
+            // log the move before launching the attack
+            loggedMoves.push(`[${coordinates}]`);
+            hit = players[1].launchAttack(players[0].gameboard, coordinates);
         }
-    }
+    };
+    
+    const randomCoordinates = (previousMoves) => {
+        let coordinates;
+        let attempts = 0;
+        const maxAttempts = 100; // Arbitrary limit to prevent infinite loops
+        do {
+            coordinates = helperFunctions.generateCoordinates(10);
+            attempts++;
+            if (attempts > maxAttempts) return null; // No valid moves left
+        } while (previousMoves.includes(`[${coordinates}]`));
+        return coordinates;
+    };
+    
+    const adjacentCoordinates = (previousMoves, lastMove) => {
+        let coordinates;
+        let attempts = 0;
+        const maxAttempts = 10; // Limit attempts to prevent infinite loops
+        do {
+            coordinates = helperFunctions.getAdjacentCoordinates(lastMove);
+            attempts++;
+            if (attempts > maxAttempts) return null; // No valid adjacent moves
+        } while (previousMoves.includes(`[${coordinates}]`));
+        return coordinates;
+    };
 
     return {
         players,
         init,
         renderBoards,
         playerTurn,
-        computerTurn
+        computerTurn,
     }
 })();
 
